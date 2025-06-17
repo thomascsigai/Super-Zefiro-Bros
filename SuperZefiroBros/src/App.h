@@ -18,7 +18,7 @@ namespace ZefirApp
 		void OnInit() override
 		{
 			m_SceneManager->LoadScene(std::make_unique<DefaultScene>(), &m_EngineContext);
-			m_Window->SetSettings({ "Sandbox", 1080, 720, true });
+			m_Window->SetSettings({ "Super Zefiro Bros.", 1024, 768, true });
 		}
 
 		void HandleEvents(SDL_Event& e) override

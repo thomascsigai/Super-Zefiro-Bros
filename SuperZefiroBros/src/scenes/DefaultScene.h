@@ -17,6 +17,7 @@ namespace ZefirApp
 				m_EngineContext->resourceManager->GetTexture("resources\\textures\\mario.png"),
 				m_EngineContext->resourceManager->GetAnimatedTexture("resources\\anims\\mario-run.png")
 			)));
+			m_Cam.zoom = -2.0f;
 		}
 
 		void OnUnload() override
