@@ -1,5 +1,5 @@
 #Define application name
-set(ZEFIR_APP "Sandbox")
+set(ZEFIR_APP "SuperZefiroBros")
 
 if(WIN32 AND CMAKE_BUILD_TYPE STREQUAL "Release")
     set(CMAKE_WIN32_EXECUTABLE ON)
