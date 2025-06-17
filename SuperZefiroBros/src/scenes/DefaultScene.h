@@ -3,6 +3,7 @@
 #include <scene/Scene.h>
 #include <core/debug/Log.h>
 #include <gameobjects/Player.h>
+#include <gameobjects/Background.h>
 
 namespace ZefirApp
 {
@@ -13,11 +14,16 @@ namespace ZefirApp
 		void OnLoad() override
 		{
 			APP_LOG_INFO("Scene load");
+
+			AddObjectToScene(std::make_unique<ZefirApp::Background>(
+				m_EngineContext->resourceManager->GetTexture("resources\\textures\\1-1.png"))
+			);
+			
 			AddObjectToScene(std::make_unique<ZefirApp::Player>(ZefirApp::Player(
 				m_EngineContext->resourceManager->GetTexture("resources\\textures\\mario.png"),
 				m_EngineContext->resourceManager->GetAnimatedTexture("resources\\anims\\mario-run.png")
 			)));
-			m_Cam.zoom = -2.0f;
+			m_Cam.zoom = 2.0f;
 		}
 
 		void OnUnload() override
@@ -27,7 +33,7 @@ namespace ZefirApp
 
 		void OnUpdate() override
 		{
-			m_Cam.position = m_SceneObjects[0]->m_Transform2D.position;
+			
 		}
 
 		void OnSceneEvent(const SDL_Event& e)

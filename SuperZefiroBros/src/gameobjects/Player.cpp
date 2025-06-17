@@ -11,6 +11,7 @@ namespace ZefirApp
 
 		SetTexture(m_IdleTexture);
 
+		m_UsePhysics = true;
 		m_BodyDef.type = b2_dynamicBody;
 		m_BodyDef.position = { 0, 0 };
 		m_BodyDef.gravityScale = 0;
