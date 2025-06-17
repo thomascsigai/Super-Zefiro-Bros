@@ -6,7 +6,6 @@
 #include <gameobjects/Player.h>
 
 #include <scenes/DefaultScene.h>
-#include <scenes/DefaultScene2.h>
 
 namespace ZefirApp
 {
@@ -19,7 +18,7 @@ namespace ZefirApp
 		void OnInit() override
 		{
 			m_SceneManager->LoadScene(std::make_unique<DefaultScene>(), &m_EngineContext);
-			m_Window->SetSettings({ "Sandbox", 1080, 720, false });
+			m_Window->SetSettings({ "Sandbox", 1080, 720, true });
 		}
 
 		void HandleEvents(SDL_Event& e) override
@@ -29,10 +28,6 @@ namespace ZefirApp
 				if (e.key.keysym.sym == SDLK_1)
 				{
 					m_SceneManager->LoadScene(std::make_unique<DefaultScene>(), &m_EngineContext);
-				}
-				if (e.key.keysym.sym == SDLK_2)
-				{
-					m_SceneManager->LoadScene(std::make_unique<DefaultScene2>(), &m_EngineContext);
 				}
 			}
 		}

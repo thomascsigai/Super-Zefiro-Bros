@@ -7,7 +7,7 @@ namespace ZefirApp
 		: GameObject("Player"), m_IdleTexture(idle), m_WalkTexture(walk)
 	{
 		m_Transform2D.SetPosition(0, 0);
-		m_Transform2D.SetSize(2, 2);
+		m_Transform2D.SetSize(1, 1);
 
 		SetTexture(m_IdleTexture);
 
@@ -20,7 +20,7 @@ namespace ZefirApp
 
 	void Player::Update(double deltaTime)
 	{
-		/*if (m_Rigidbody2D.velocity.x != 0 || m_Rigidbody2D.velocity.y != 0)
+		if (abs(b2Body_GetLinearVelocity(m_BodyId).x) >= 0.01f)
 		{
 			if (m_WalkTexture != m_Texture)
 				SetTexture(m_WalkTexture);
@@ -28,23 +28,19 @@ namespace ZefirApp
 		else
 		{
 			SetTexture(m_IdleTexture);
-		}*/
+		}
 	}
 
 	void Player::HandleEvent(const SDL_Event& e)
 	{
 		if (e.type == SDL_KEYDOWN && e.key.repeat == 0)
 		{
-			if (e.key.keysym.sym == MOVE_KEYBIND.UP)	b2Body_ApplyForceToCenter(m_BodyId, { 0, PLAYER_SPEED }, true);
-			if (e.key.keysym.sym == MOVE_KEYBIND.DOWN)	b2Body_ApplyForceToCenter(m_BodyId, { 0, -PLAYER_SPEED }, true);
 			if (e.key.keysym.sym == MOVE_KEYBIND.LEFT)	b2Body_ApplyForceToCenter(m_BodyId, { -PLAYER_SPEED, 0 }, true);
 			if (e.key.keysym.sym == MOVE_KEYBIND.RIGHT)	b2Body_ApplyForceToCenter(m_BodyId, { PLAYER_SPEED, 0 }, true);
 			
 		}
 		if (e.type == SDL_KEYUP && e.key.repeat == 0)
 		{
-			if (e.key.keysym.sym == MOVE_KEYBIND.UP)	b2Body_ApplyForceToCenter(m_BodyId, { 0, -PLAYER_SPEED }, true);
-			if (e.key.keysym.sym == MOVE_KEYBIND.DOWN)	b2Body_ApplyForceToCenter(m_BodyId, { 0, PLAYER_SPEED }, true);
 			if (e.key.keysym.sym == MOVE_KEYBIND.LEFT)	b2Body_ApplyForceToCenter(m_BodyId, { PLAYER_SPEED, 0 }, true);
 			if (e.key.keysym.sym == MOVE_KEYBIND.RIGHT)	b2Body_ApplyForceToCenter(m_BodyId, { -PLAYER_SPEED, 0 }, true);
 		}
