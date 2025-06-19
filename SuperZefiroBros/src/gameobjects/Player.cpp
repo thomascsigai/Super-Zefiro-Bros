@@ -6,16 +6,16 @@ namespace ZefirApp
 	Player::Player(std::shared_ptr<Zefir::Texture> idle, std::shared_ptr<Zefir::Texture> walk)
 		: GameObject("Player"), m_IdleTexture(idle), m_WalkTexture(walk)
 	{
-		m_Transform2D.SetPosition(0, 0);
+		m_Transform2D.SetPosition(-5, -5);
 		m_Transform2D.SetSize(1, 1);
 
 		SetTexture(m_IdleTexture);
 
 		m_UsePhysics = true;
 		m_BodyDef.type = b2_dynamicBody;
-		m_BodyDef.position = { 0, 0 };
-		m_BodyDef.gravityScale = 0;
-		m_ShapeDef.material.friction = 1.0f;
+		m_BodyDef.position = { -5, -5 };
+		m_BodyDef.gravityScale = 1;
+		m_ShapeDef.material.friction = 0.0f;
 		m_Box = b2MakeBox(0.5f, 0.5f);
 	}
 
