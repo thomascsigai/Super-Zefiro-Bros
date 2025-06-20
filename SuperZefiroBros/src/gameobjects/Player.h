@@ -17,6 +17,10 @@ namespace ZefirApp
 		std::shared_ptr<Zefir::Texture> m_IdleTexture;
 		std::shared_ptr<Zefir::Texture> m_WalkTexture;
 
-		float PLAYER_SPEED = 500.0f;
+		float WALK_SPEED = 5.0f;
+		float JUMP_HEIGHT = 10.0f;
+		Zefir::Vector2 moveDir = { 0, 0 };
+
+		bool IsOnGround();
 	};
 }

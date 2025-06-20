@@ -13,6 +13,7 @@ namespace ZefirApp
 
 		m_UsePhysics = true;
 		m_BodyDef.type = b2_dynamicBody;
+		m_BodyDef.fixedRotation = true;
 		m_BodyDef.position = { -5, -5 };
 		m_BodyDef.gravityScale = 1;
 		m_ShapeDef.material.friction = 0.0f;
@@ -21,7 +22,9 @@ namespace ZefirApp
 
 	void Player::Update(double deltaTime)
 	{
-		if (abs(b2Body_GetLinearVelocity(m_BodyId).x) >= 0.01f)
+		b2Vec2 velocity = b2Body_GetLinearVelocity(m_BodyId);
+
+		if (abs(velocity.x) >= 0.01f)
 		{
 			if (m_WalkTexture != m_Texture)
 				SetTexture(m_WalkTexture);
@@ -30,20 +33,35 @@ namespace ZefirApp
 		{
 			SetTexture(m_IdleTexture);
 		}
+
+		velocity.x = moveDir.x * WALK_SPEED;
+
+		if (moveDir.y != 0 && IsOnGround())
+		{
+			velocity.y = JUMP_HEIGHT;
+		}
+		moveDir.y = 0;
+		
+		b2Body_SetLinearVelocity(m_BodyId, velocity);
 	}
 
 	void Player::HandleEvent(const SDL_Event& e)
 	{
 		if (e.type == SDL_KEYDOWN && e.key.repeat == 0)
 		{
-			if (e.key.keysym.sym == MOVE_KEYBIND.LEFT)	b2Body_ApplyForceToCenter(m_BodyId, { -PLAYER_SPEED, 0 }, true);
-			if (e.key.keysym.sym == MOVE_KEYBIND.RIGHT)	b2Body_ApplyForceToCenter(m_BodyId, { PLAYER_SPEED, 0 }, true);
-			
+			if (e.key.keysym.sym == MOVE_KEYBIND.LEFT)	moveDir.x -= 1;
+			if (e.key.keysym.sym == MOVE_KEYBIND.RIGHT)	moveDir.x += 1;
+			if (e.key.keysym.sym == SDLK_SPACE)			moveDir.y += 1;
 		}
 		if (e.type == SDL_KEYUP && e.key.repeat == 0)
 		{
-			if (e.key.keysym.sym == MOVE_KEYBIND.LEFT)	b2Body_ApplyForceToCenter(m_BodyId, { PLAYER_SPEED, 0 }, true);
-			if (e.key.keysym.sym == MOVE_KEYBIND.RIGHT)	b2Body_ApplyForceToCenter(m_BodyId, { -PLAYER_SPEED, 0 }, true);
+			if (e.key.keysym.sym == MOVE_KEYBIND.LEFT)	moveDir.x += 1;
+			if (e.key.keysym.sym == MOVE_KEYBIND.RIGHT)	moveDir.x -= 1;
 		}
+	}
+
+	bool Player::IsOnGround()
+	{
+		return true;
 	}
 }
