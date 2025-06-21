@@ -17,6 +17,7 @@ namespace ZefirApp
 		m_BodyDef.position = { -5, -5 };
 		m_BodyDef.gravityScale = 1;
 		m_ShapeDef.material.friction = 0.0f;
+		m_ShapeDef.enableContactEvents = true;
 		m_Box = b2MakeBox(0.5f, 0.5f);
 	}
 
@@ -36,7 +37,7 @@ namespace ZefirApp
 
 		velocity.x = moveDir.x * WALK_SPEED;
 
-		if (moveDir.y != 0 && IsOnGround())
+		if (moveDir.y != 0 && IsOnGround)
 		{
 			velocity.y = JUMP_HEIGHT;
 		}
@@ -60,8 +61,19 @@ namespace ZefirApp
 		}
 	}
 
-	bool Player::IsOnGround()
+	void Player::OnCollisionEnter(Zefir::GameObject* other)
 	{
-		return true;
+		if (other->m_Name == "Ground")
+		{
+			IsOnGround = true;
+		}
+	}
+
+	void Player::OnCollisionExit(Zefir::GameObject* other)
+	{
+		if (other->m_Name == "Ground")
+		{
+			IsOnGround = false;
+		}
 	}
 }

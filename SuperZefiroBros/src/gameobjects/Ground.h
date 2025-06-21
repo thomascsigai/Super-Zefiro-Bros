@@ -8,16 +8,17 @@ namespace ZefirApp
 	{
 	public:
 		Ground(float x, float y, float w, float h, std::shared_ptr<Zefir::Texture> texture)
+			: GameObject("Ground", x, y)
 		{
 			SetTexture(texture);
 
-			m_Transform2D.SetPosition(x, y);
 			m_Transform2D.SetSize(w, h);
 
 			m_UsePhysics = true;
 			m_BodyDef.type = b2_staticBody;
 			m_BodyDef.position = { x, y };
 			m_Box = b2MakeBox(w/2, h/2);
+			m_ShapeDef.enableContactEvents = true;
 		}
 
 		void Update(double deltaTime) override {}
