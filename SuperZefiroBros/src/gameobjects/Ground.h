@@ -19,6 +19,8 @@ namespace ZefirApp
 			m_BodyDef.position = { x, y };
 			m_Box = b2MakeBox(w/2, h/2);
 			m_ShapeDef.enableContactEvents = true;
+			m_ShapeDef.material.friction = 0.0f;
+			m_ShapeDef.material.restitution = 0.0f;
 		}
 
 		void Update(double deltaTime) override {}

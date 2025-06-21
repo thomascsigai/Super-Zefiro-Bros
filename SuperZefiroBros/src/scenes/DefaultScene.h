@@ -25,7 +25,8 @@ namespace ZefirApp
 			// Player
 			AddObjectToScene(std::make_unique<ZefirApp::Player>(ZefirApp::Player(
 				m_EngineContext->resourceManager->GetTexture("resources\\textures\\mario.png"),
-				m_EngineContext->resourceManager->GetAnimatedTexture("resources\\anims\\mario-run.png")
+				m_EngineContext->resourceManager->GetAnimatedTexture("resources\\anims\\mario-run.png"),
+				m_EngineContext->resourceManager->GetTexture("resources\\textures\\mario-jump.png")
 			)));
 			ptr_Player = m_SceneObjects[1].get();
 

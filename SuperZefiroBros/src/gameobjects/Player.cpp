@@ -3,8 +3,9 @@
 
 namespace ZefirApp
 {
-	Player::Player(std::shared_ptr<Zefir::Texture> idle, std::shared_ptr<Zefir::Texture> walk)
-		: GameObject("Player"), m_IdleTexture(idle), m_WalkTexture(walk)
+	Player::Player(std::shared_ptr<Zefir::Texture> idle, std::shared_ptr<Zefir::Texture> walk,
+		std::shared_ptr<Zefir::Texture> jump)
+		: GameObject("Player"), m_IdleTexture(idle), m_WalkTexture(walk), m_JumpTexture(jump)
 	{
 		m_Transform2D.SetPosition(-5, -5);
 		m_Transform2D.SetSize(1, 1);
@@ -17,6 +18,7 @@ namespace ZefirApp
 		m_BodyDef.position = { -5, -5 };
 		m_BodyDef.gravityScale = 1;
 		m_ShapeDef.material.friction = 0.0f;
+		m_ShapeDef.material.restitution = 0.0f;
 		m_ShapeDef.enableContactEvents = true;
 		m_Box = b2MakeBox(0.5f, 0.5f);
 	}
@@ -25,7 +27,11 @@ namespace ZefirApp
 	{
 		b2Vec2 velocity = b2Body_GetLinearVelocity(m_BodyId);
 
-		if (abs(velocity.x) >= 0.01f)
+		if (!IsOnGround)
+		{
+			SetTexture(m_JumpTexture);
+		}
+		else if (abs(velocity.x) >= 0.01f)
 		{
 			if (m_WalkTexture != m_Texture)
 				SetTexture(m_WalkTexture);
@@ -35,14 +41,12 @@ namespace ZefirApp
 			SetTexture(m_IdleTexture);
 		}
 
-		velocity.x = moveDir.x * WALK_SPEED;
+		if (moveDir.x != 0) m_Transform2D.horizontalFlip = (moveDir.x < 0);
 
-		if (moveDir.y != 0 && IsOnGround)
-		{
-			velocity.y = JUMP_HEIGHT;
-		}
+		velocity.x = moveDir.x * WALK_SPEED;
+		if (moveDir.y != 0 && IsOnGround) velocity.y = JUMP_HEIGHT; 
 		moveDir.y = 0;
-		
+
 		b2Body_SetLinearVelocity(m_BodyId, velocity);
 	}
 
