@@ -14,7 +14,7 @@ namespace ZefirApp
 
 		void HandleEvent(const SDL_Event& e) override;
 
-		void OnCollisionEnter(Zefir::GameObject* other) override;
+		void OnCollisionEnter(Zefir::GameObject* other, b2Manifold manifold) override;
 		void OnCollisionExit(Zefir::GameObject* other) override;
 
 	private:
@@ -23,9 +23,10 @@ namespace ZefirApp
 		std::shared_ptr<Zefir::Texture> m_JumpTexture;
 
 		float WALK_SPEED = 5.0f;
-		float JUMP_HEIGHT = 15.0f;
+		float JUMP_HEIGHT = 16.0f;
 		Zefir::Vector2 moveDir = { 0, 0 };
 
 		bool IsOnGround = false;
+		Zefir::GameObject* groundObject = nullptr;
 	};
 }

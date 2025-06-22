@@ -2,9 +2,11 @@
 
 #include <scene/Scene.h>
 #include <core/debug/Log.h>
+
 #include <gameobjects/Player.h>
 #include <gameobjects/Background.h>
 #include <gameobjects/Ground.h>
+#include <gameobjects/Pipe.h>
 
 namespace ZefirApp
 {
@@ -29,6 +31,32 @@ namespace ZefirApp
 				m_EngineContext->resourceManager->GetTexture("resources\\textures\\mario-jump.png")
 			)));
 			ptr_Player = m_SceneObjects[1].get();
+
+			// Props (Pipes / Bricks etc.)
+			AddObjectToScene(std::make_unique<ZefirApp::Pipe>(
+				19, -5.5, 2, 4,
+				m_EngineContext->resourceManager->GetTexture("resources\\textures\\pipe.png")
+			));
+			AddObjectToScene(std::make_unique<ZefirApp::Pipe>(
+				29, -4.5, 2, 4,
+				m_EngineContext->resourceManager->GetTexture("resources\\textures\\pipe.png")
+			));
+			AddObjectToScene(std::make_unique<ZefirApp::Pipe>(
+				37, -3.5, 2, 4,
+				m_EngineContext->resourceManager->GetTexture("resources\\textures\\pipe.png")
+			));
+			AddObjectToScene(std::make_unique<ZefirApp::Pipe>(
+				48, -3.5, 2, 4,
+				m_EngineContext->resourceManager->GetTexture("resources\\textures\\pipe.png")
+			));
+			AddObjectToScene(std::make_unique<ZefirApp::Pipe>(
+				154, -5.5, 2, 4,
+				m_EngineContext->resourceManager->GetTexture("resources\\textures\\pipe.png")
+			));
+			AddObjectToScene(std::make_unique<ZefirApp::Pipe>(
+				170, -5.5, 2, 4,
+				m_EngineContext->resourceManager->GetTexture("resources\\textures\\pipe.png")
+			));
 
 			// Grounds
 			AddObjectToScene(std::make_unique<ZefirApp::Ground>(

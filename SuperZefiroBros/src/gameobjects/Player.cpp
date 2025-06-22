@@ -20,7 +20,7 @@ namespace ZefirApp
 		m_ShapeDef.material.friction = 0.0f;
 		m_ShapeDef.material.restitution = 0.0f;
 		m_ShapeDef.enableContactEvents = true;
-		m_Box = b2MakeBox(0.5f, 0.5f);
+		m_Box = b2MakeBox(0.4f, 0.5f);
 	}
 
 	void Player::Update(double deltaTime)
@@ -65,19 +65,21 @@ namespace ZefirApp
 		}
 	}
 
-	void Player::OnCollisionEnter(Zefir::GameObject* other)
+	void Player::OnCollisionEnter(Zefir::GameObject* other, b2Manifold manifold)
 	{
-		if (other->m_Name == "Ground")
+		if (manifold.normal.y > 0.8f && !groundObject)
 		{
 			IsOnGround = true;
+			groundObject = other;
 		}
 	}
 
 	void Player::OnCollisionExit(Zefir::GameObject* other)
 	{
-		if (other->m_Name == "Ground")
+		if (other == groundObject)
 		{
 			IsOnGround = false;
+			groundObject = nullptr;
 		}
 	}
 }
