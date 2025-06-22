@@ -7,6 +7,8 @@
 #include <gameobjects/Background.h>
 #include <gameobjects/Ground.h>
 #include <gameobjects/Pipe.h>
+#include <gameobjects/Brick.h>
+#include <gameobjects/Box.h>
 
 namespace ZefirApp
 {
@@ -32,31 +34,55 @@ namespace ZefirApp
 			)));
 			ptr_Player = m_SceneObjects[1].get();
 
-			// Props (Pipes / Bricks etc.)
-			AddObjectToScene(std::make_unique<ZefirApp::Pipe>(
-				19, -5.5, 2, 4,
-				m_EngineContext->resourceManager->GetTexture("resources\\textures\\pipe.png")
-			));
-			AddObjectToScene(std::make_unique<ZefirApp::Pipe>(
-				29, -4.5, 2, 4,
-				m_EngineContext->resourceManager->GetTexture("resources\\textures\\pipe.png")
-			));
-			AddObjectToScene(std::make_unique<ZefirApp::Pipe>(
-				37, -3.5, 2, 4,
-				m_EngineContext->resourceManager->GetTexture("resources\\textures\\pipe.png")
-			));
-			AddObjectToScene(std::make_unique<ZefirApp::Pipe>(
-				48, -3.5, 2, 4,
-				m_EngineContext->resourceManager->GetTexture("resources\\textures\\pipe.png")
-			));
-			AddObjectToScene(std::make_unique<ZefirApp::Pipe>(
-				154, -5.5, 2, 4,
-				m_EngineContext->resourceManager->GetTexture("resources\\textures\\pipe.png")
-			));
-			AddObjectToScene(std::make_unique<ZefirApp::Pipe>(
-				170, -5.5, 2, 4,
-				m_EngineContext->resourceManager->GetTexture("resources\\textures\\pipe.png")
-			));
+			// Props ----------------------------------------
+			//Pipes
+			std::array<Zefir::Vector2, 6> pipeCoords = {
+				Zefir::Vector2(19, -5.5),
+				Zefir::Vector2(29, -4.5),
+				Zefir::Vector2(37, -3.5),
+				Zefir::Vector2(48, -3.5),
+				Zefir::Vector2(154, -5.5),
+				Zefir::Vector2(170, -5.5)
+			};
+
+			for (auto& pipe : pipeCoords)
+			{
+				AddObjectToScene(std::make_unique<ZefirApp::Pipe>(
+					pipe.x, pipe.y, 2, 4,
+					m_EngineContext->resourceManager->GetTexture("resources\\textures\\pipe.png")
+					));
+			}
+			
+			//Bricks
+			std::array<Zefir::Vector2, 3> brickCoords = {
+				Zefir::Vector2(10.5, -2.0),
+				Zefir::Vector2(12.5, -2.0),
+				Zefir::Vector2(14.5, -2.0)
+			};
+
+			for (auto& brick : brickCoords)
+			{
+				AddObjectToScene(std::make_unique<ZefirApp::Brick>(
+					brick.x, brick.y,
+					m_EngineContext->resourceManager->GetTexture("resources\\textures\\brick.png")
+				));
+			}
+
+			// Boxs
+			std::array<Zefir::Vector2, 4> boxCoords = {
+				Zefir::Vector2(5.5, -2.0),
+				Zefir::Vector2(11.5, -2.0),
+				Zefir::Vector2(13.5, -2.0),
+				Zefir::Vector2(12.5, 2.0)
+			};
+
+			for (auto& box : boxCoords)
+			{
+				AddObjectToScene(std::make_unique<ZefirApp::Box>(
+					box.x, box.y,
+					m_EngineContext->resourceManager->GetAnimatedTexture("resources\\anims\\box.png")
+				));
+			}
 
 			// Grounds
 			AddObjectToScene(std::make_unique<ZefirApp::Ground>(
