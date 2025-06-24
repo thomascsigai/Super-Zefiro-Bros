@@ -1,7 +1,8 @@
 {
-    "name": "box",
-    "frameCount": 3,
-    "frameTime": 250.0,
-    "frameW": 16,
-    "frameH": 16
+  "name": "box",
+  "frameCount": 3,
+  "frameTime": 250.0,
+  "frameW": 16,
+  "frameH": 16,
+  "repeat": true
 }
