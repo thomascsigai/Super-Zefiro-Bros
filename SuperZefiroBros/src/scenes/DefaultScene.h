@@ -9,6 +9,7 @@
 #include <gameobjects/Pipe.h>
 #include <gameobjects/Brick.h>
 #include <gameobjects/Box.h>
+#include <gameobjects/EmptyBox.h>
 
 namespace ZefirApp
 {
@@ -64,7 +65,8 @@ namespace ZefirApp
 			{
 				AddObjectToScene(std::make_unique<ZefirApp::Brick>(
 					brick.x, brick.y,
-					m_EngineContext->resourceManager->GetTexture("resources\\textures\\brick.png")
+					m_EngineContext->resourceManager->GetTexture("resources\\textures\\brick.png"),
+					m_EngineContext->resourceManager->GetAnimatedTexture("resources\\anims\\brick-broken.png")
 				));
 			}
 
@@ -80,7 +82,8 @@ namespace ZefirApp
 			{
 				AddObjectToScene(std::make_unique<ZefirApp::Box>(
 					box.x, box.y,
-					m_EngineContext->resourceManager->GetAnimatedTexture("resources\\anims\\box.png")
+					m_EngineContext->resourceManager->GetAnimatedTexture("resources\\anims\\box.png"),
+					m_EngineContext->resourceManager->GetTexture("resources\\textures\\box-broken.png")
 				));
 			}
 

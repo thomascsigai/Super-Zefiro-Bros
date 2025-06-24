@@ -17,6 +17,8 @@ namespace ZefirApp
 		void OnCollisionEnter(Zefir::GameObject* other, b2Manifold manifold) override;
 		void OnCollisionExit(Zefir::GameObject* other) override;
 
+		bool IsOnGround();
+
 	private:
 		std::shared_ptr<Zefir::Texture> m_IdleTexture;
 		std::shared_ptr<Zefir::Texture> m_WalkTexture;
@@ -26,7 +28,6 @@ namespace ZefirApp
 		float JUMP_HEIGHT = 16.0f;
 		Zefir::Vector2 moveDir = { 0, 0 };
 
-		bool IsOnGround = false;
-		Zefir::GameObject* groundObject = nullptr;
+		std::vector<Zefir::GameObject*> groundObjects;
 	};
 }

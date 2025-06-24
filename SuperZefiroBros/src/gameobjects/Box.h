@@ -9,8 +9,9 @@ namespace ZefirApp
 	class Box : public Brick
 	{
 	public:
-		Box(float x, float y, std::shared_ptr<Zefir::Texture> texture)
-			: Brick(x, y, texture)
+		Box(float x, float y, std::shared_ptr<Zefir::Texture> texture,
+			std::shared_ptr<Zefir::Texture> broken)
+			: Brick(x, y, texture, broken)
 		{
 			m_Name = "Box";
 			SetTexture(texture);
@@ -26,7 +27,14 @@ namespace ZefirApp
 			m_ShapeDef.material.restitution = 0.0f;
 		}
 
-		void Update(double deltaTime) override {}
-		void HandleEvent(const SDL_Event& e) override {}
+		void Break() override
+		{
+			if (m_Texture == brokenAnim) return;
+
+			m_UsePhysics = false;
+			isBouncing = true;
+
+			SetTexture(brokenAnim);
+		}
 	};
 }

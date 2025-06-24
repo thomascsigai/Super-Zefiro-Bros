@@ -1,5 +1,6 @@
 #include <gameobjects/Player.h>
 #include <GameConfig.h>
+#include <algorithm>
 
 namespace ZefirApp
 {
@@ -20,14 +21,14 @@ namespace ZefirApp
 		m_ShapeDef.material.friction = 0.0f;
 		m_ShapeDef.material.restitution = 0.0f;
 		m_ShapeDef.enableContactEvents = true;
-		m_Box = b2MakeBox(0.4f, 0.5f);
+		m_Box = b2MakeRoundedBox(0.4f, 0.5f, 0.01f);
 	}
 
 	void Player::Update(double deltaTime)
 	{
 		b2Vec2 velocity = b2Body_GetLinearVelocity(m_BodyId);
 
-		if (!IsOnGround)
+		if (!IsOnGround())
 		{
 			SetTexture(m_JumpTexture);
 		}
@@ -44,7 +45,7 @@ namespace ZefirApp
 		if (moveDir.x != 0) m_Transform2D.horizontalFlip = (moveDir.x < 0);
 
 		velocity.x = moveDir.x * WALK_SPEED;
-		if (moveDir.y != 0 && IsOnGround) velocity.y = JUMP_HEIGHT; 
+		if (moveDir.y != 0 && IsOnGround()) velocity.y = JUMP_HEIGHT; 
 		moveDir.y = 0;
 
 		b2Body_SetLinearVelocity(m_BodyId, velocity);
@@ -65,21 +66,26 @@ namespace ZefirApp
 		}
 	}
 
+	bool Player::IsOnGround()
+	{
+		return (groundObjects.size() != 0);
+	}
+
 	void Player::OnCollisionEnter(Zefir::GameObject* other, b2Manifold manifold)
 	{
-		if (manifold.normal.y > 0.8f && !groundObject)
+		auto it = std::find(groundObjects.begin(), groundObjects.end(), other);
+		if (manifold.normal.y < -0.8f && it == groundObjects.end())
 		{
-			IsOnGround = true;
-			groundObject = other;
+			groundObjects.push_back(other);
 		}
 	}
 
 	void Player::OnCollisionExit(Zefir::GameObject* other)
 	{
-		if (other == groundObject)
+		auto it = std::find(groundObjects.begin(), groundObjects.end(), other);
+		if (it != groundObjects.end())
 		{
-			IsOnGround = false;
-			groundObject = nullptr;
+			groundObjects.erase(it);
 		}
 	}
 }
