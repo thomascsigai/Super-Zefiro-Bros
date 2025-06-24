@@ -2,6 +2,7 @@
 
 #include <scene/Scene.h>
 #include <core/debug/Log.h>
+#include <vector>
 
 #include <gameobjects/Player.h>
 #include <gameobjects/Background.h>
@@ -10,6 +11,7 @@
 #include <gameobjects/Brick.h>
 #include <gameobjects/Box.h>
 #include <gameobjects/EmptyBox.h>
+#include <gameobjects/Block.h>
 
 namespace ZefirApp
 {
@@ -86,6 +88,34 @@ namespace ZefirApp
 					m_EngineContext->resourceManager->GetTexture("resources\\textures\\box-broken.png")
 				));
 			}
+
+			// Blocks pyramids
+			std::vector<std::unique_ptr<Block>> pyramid;
+			
+			pyramid = Block::GetPyramidBlocks(
+				{ 127.5, -5 }, m_EngineContext->resourceManager->GetTexture("resources\\textures\\block.png"), 4, -1
+			);
+			for (auto& block : pyramid)	AddObjectToScene(std::move(block));
+
+			pyramid = Block::GetPyramidBlocks(
+				{ 130.5, -5 }, m_EngineContext->resourceManager->GetTexture("resources\\textures\\block.png"), 4
+			);
+			for (auto& block : pyramid)	AddObjectToScene(std::move(block));
+
+			pyramid = Block::GetPyramidBlocks(
+				{ 142.5, -5 }, m_EngineContext->resourceManager->GetTexture("resources\\textures\\block.png"), 4, -1, 2
+			);
+			for (auto& block : pyramid)	AddObjectToScene(std::move(block));
+			
+			pyramid = Block::GetPyramidBlocks(
+				{ 145.5, -5 }, m_EngineContext->resourceManager->GetTexture("resources\\textures\\block.png"), 4
+			);
+			for (auto& block : pyramid)	AddObjectToScene(std::move(block));
+			
+			pyramid = Block::GetPyramidBlocks(
+				{ 179.5, -5 }, m_EngineContext->resourceManager->GetTexture("resources\\textures\\block.png"), 8, -1, 2
+			);
+			for (auto& block : pyramid)	AddObjectToScene(std::move(block));
 
 			// Grounds
 			AddObjectToScene(std::make_unique<ZefirApp::Ground>(
