@@ -4,7 +4,10 @@
 #include <core/debug/Log.h>
 #include <vector>
 
+#include <UserEvents.h>
+
 #include <gameobjects/Player.h>
+#include <gameobjects/BigPlayer.h>
 #include <gameobjects/Background.h>
 #include <gameobjects/Ground.h>
 #include <gameobjects/Pipe.h>
@@ -31,11 +34,12 @@ namespace ZefirApp
 			);
 			
 			// Player
-			AddObjectToScene(std::make_unique<ZefirApp::Player>(ZefirApp::Player(
+			AddObjectToScene(std::make_unique<ZefirApp::Player>(
+				-5, -5,
 				m_EngineContext->resourceManager->GetTexture("resources\\textures\\mario.png"),
 				m_EngineContext->resourceManager->GetAnimatedTexture("resources\\anims\\mario-run.png"),
 				m_EngineContext->resourceManager->GetTexture("resources\\textures\\mario-jump.png")
-			)));
+			));
 			ptr_Player = m_SceneObjects[1].get();
 
 			// Props ----------------------------------------
@@ -163,14 +167,39 @@ namespace ZefirApp
 			{
 				
 			}
+
+			if (e.type == UserEvents::PLAYER_GROW)
+			{
+				GrowPlayerSize();
+			}
+
+			if (e.type == UserEvents::PAUSE_ANIM_PLAYING)
+			{
+				// Put here the behavior of go when a player anim is playing
+			}
 		}
 
 		void CameraUpdatePosition()
 		{
 			if (ptr_Player->m_Transform2D.position.x > 0 && ptr_Player->m_Transform2D.position.x < 191)
 			{
-				m_Cam.position.x = m_SceneObjects[1]->m_Transform2D.position.x;
+				m_Cam.position.x = ptr_Player->m_Transform2D.position.x;
 			}
+		}
+
+		void GrowPlayerSize()
+		{
+			AddObjectToScene(std::make_unique<ZefirApp::Player>(ZefirApp::BigPlayer(
+				ptr_Player->m_Transform2D.position.x, ptr_Player->m_Transform2D.position.y + 0.5f,
+				m_EngineContext->resourceManager->GetTexture("resources\\textures\\mario-big.png"),
+				m_EngineContext->resourceManager->GetAnimatedTexture("resources\\anims\\mario-big-run.png"),
+				m_EngineContext->resourceManager->GetTexture("resources\\textures\\mario-big-jump.png"),
+				m_EngineContext->resourceManager->GetAnimatedTexture("resources\\anims\\mario-grow.png")
+			)));
+			
+			RemoveObject(ptr_Player->m_BodyId.index1);
+
+			ptr_Player = std::prev(m_SceneObjects.end())->second.get();
 		}
 
 		Zefir::GameObject* ptr_Player;

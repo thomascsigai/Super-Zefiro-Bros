@@ -1,15 +1,15 @@
 #include <gameobjects/Player.h>
+#include <UserEvents.h>
 #include <GameConfig.h>
 #include <algorithm>
 
 namespace ZefirApp
 {
-	Player::Player(std::shared_ptr<Zefir::Texture> idle, std::shared_ptr<Zefir::Texture> walk,
+	Player::Player(float x, float y, std::shared_ptr<Zefir::Texture> idle, std::shared_ptr<Zefir::Texture> walk,
 		std::shared_ptr<Zefir::Texture> jump)
-		: GameObject("Player"), m_IdleTexture(idle), m_WalkTexture(walk), m_JumpTexture(jump),
-		isBig(false)
+		: GameObject("Player", x, y), m_IdleTexture(idle), m_WalkTexture(walk), m_JumpTexture(jump),
+		isBig(false), isGrowing(false)
 	{
-		m_Transform2D.SetPosition(-5, -5);
 		m_Transform2D.SetSize(1, 1);
 
 		SetTexture(m_IdleTexture);
@@ -17,16 +17,24 @@ namespace ZefirApp
 		m_UsePhysics = true;
 		m_BodyDef.type = b2_dynamicBody;
 		m_BodyDef.fixedRotation = true;
-		m_BodyDef.position = { -5, -5 };
+		m_BodyDef.position = { x, y };
 		m_BodyDef.gravityScale = 1;
 		m_ShapeDef.material.friction = 0.0f;
 		m_ShapeDef.material.restitution = 0.0f;
 		m_ShapeDef.enableContactEvents = true;
-		m_Box = b2MakeRoundedBox(0.4f, 0.5f, 0.01f);
+		m_Box = b2MakeRoundedBox(0.4f, 0.48f, 0.01f);
 	}
 
 	void Player::Update(double deltaTime)
 	{
+		if (isGrowing)
+		{
+			Zefir::AnimatedTexture* anim = static_cast<Zefir::AnimatedTexture*>(m_Texture.get());
+			
+			if (anim->IsEnded()) isGrowing = false;
+			else return;
+		}
+
 		b2Vec2 velocity = b2Body_GetLinearVelocity(m_BodyId);
 
 		if (!IsOnGround())
@@ -82,7 +90,12 @@ namespace ZefirApp
 
 		if (other->m_Name == "Mushroom")
 		{
-			isBig = true;
+			if (!isBig) Grow();
+			
+			SDL_Event e;
+			e.type = Zefir::EngineEvents::SCENE_REMOVE_OBJECT;
+			e.user.data1 = new int(other->m_BodyId.index1);
+			SDL_PushEvent(&e);
 		}
 	}
 
@@ -93,5 +106,16 @@ namespace ZefirApp
 		{
 			groundObjects.erase(it);
 		}
+	}
+
+	void Player::Grow()
+	{		
+		SDL_Event e1, e2;
+
+		e1.type = UserEvents::PLAYER_GROW;
+		SDL_PushEvent(&e1);
+
+		e2.type = UserEvents::PAUSE_ANIM_PLAYING;
+		SDL_PushEvent(&e2);
 	}
 }
