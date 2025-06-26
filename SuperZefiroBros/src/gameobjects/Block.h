@@ -48,7 +48,6 @@ namespace ZefirApp
 				for (j = 0; j < height - i + topLength - 1; j++)
 				{
 					blocks.emplace_back(std::make_unique<Block>(pos.x + i * direction, pos.y + j, texture));
-					APP_LOG_INFO("B");
 				}
 			}
 
