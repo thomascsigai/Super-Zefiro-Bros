@@ -12,6 +12,7 @@
 #include <gameobjects/Box.h>
 #include <gameobjects/EmptyBox.h>
 #include <gameobjects/Block.h>
+#include <gameobjects/Mushroom.h>
 
 namespace ZefirApp
 {
@@ -133,6 +134,11 @@ namespace ZefirApp
 			AddObjectToScene(std::make_unique<ZefirApp::Ground>(
 				173, -6.5, 56, 2,
 				m_EngineContext->resourceManager->GetTexture("resources\\textures\\ground.png")
+			));
+
+			AddObjectToScene(std::make_unique<ZefirApp::Mushroom>(
+				0, 0,
+				m_EngineContext->resourceManager->GetTexture("resources\\textures\\mushroom.png")
 			));
 
 			if (!ptr_Player)

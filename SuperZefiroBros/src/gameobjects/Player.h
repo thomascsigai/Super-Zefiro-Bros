@@ -28,6 +28,8 @@ namespace ZefirApp
 		float JUMP_HEIGHT = 16.0f;
 		Zefir::Vector2 moveDir = { 0, 0 };
 
+		bool isBig;
+
 		std::vector<Zefir::GameObject*> groundObjects;
 	};
 }

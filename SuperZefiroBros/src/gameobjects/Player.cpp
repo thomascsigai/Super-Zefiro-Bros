@@ -6,7 +6,8 @@ namespace ZefirApp
 {
 	Player::Player(std::shared_ptr<Zefir::Texture> idle, std::shared_ptr<Zefir::Texture> walk,
 		std::shared_ptr<Zefir::Texture> jump)
-		: GameObject("Player"), m_IdleTexture(idle), m_WalkTexture(walk), m_JumpTexture(jump)
+		: GameObject("Player"), m_IdleTexture(idle), m_WalkTexture(walk), m_JumpTexture(jump),
+		isBig(false)
 	{
 		m_Transform2D.SetPosition(-5, -5);
 		m_Transform2D.SetSize(1, 1);
@@ -77,6 +78,11 @@ namespace ZefirApp
 		if (manifold.normal.y < -0.8f && it == groundObjects.end())
 		{
 			groundObjects.push_back(other);
+		}
+
+		if (other->m_Name == "Mushroom")
+		{
+			isBig = true;
 		}
 	}
 
