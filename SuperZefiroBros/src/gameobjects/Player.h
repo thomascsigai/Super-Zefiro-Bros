@@ -21,6 +21,8 @@ namespace ZefirApp
 
 		void Grow();
 
+		void ProcessKeyboardState();
+
 	protected:
 		bool isBig;
 		bool isGrowing;

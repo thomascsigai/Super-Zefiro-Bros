@@ -30,10 +30,18 @@ namespace ZefirApp
 		if (isGrowing)
 		{
 			Zefir::AnimatedTexture* anim = static_cast<Zefir::AnimatedTexture*>(m_Texture.get());
+			m_UsePhysics = false;
 			
-			if (anim->IsEnded()) isGrowing = false;
+			if (anim->IsEnded())
+			{
+				isGrowing = false;
+				anim->SetEnded(false);
+				m_UsePhysics = true;
+			}
 			else return;
 		}
+
+		ProcessKeyboardState();
 
 		b2Vec2 velocity = b2Body_GetLinearVelocity(m_BodyId);
 
@@ -61,19 +69,7 @@ namespace ZefirApp
 	}
 
 	void Player::HandleEvent(const SDL_Event& e)
-	{
-		if (e.type == SDL_KEYDOWN && e.key.repeat == 0)
-		{
-			if (e.key.keysym.sym == MOVE_KEYBIND.LEFT)	moveDir.x -= 1;
-			if (e.key.keysym.sym == MOVE_KEYBIND.RIGHT)	moveDir.x += 1;
-			if (e.key.keysym.sym == SDLK_SPACE)			moveDir.y += 1;
-		}
-		if (e.type == SDL_KEYUP && e.key.repeat == 0)
-		{
-			if (e.key.keysym.sym == MOVE_KEYBIND.LEFT)	moveDir.x += 1;
-			if (e.key.keysym.sym == MOVE_KEYBIND.RIGHT)	moveDir.x -= 1;
-		}
-	}
+	{}
 
 	bool Player::IsOnGround()
 	{
@@ -117,5 +113,17 @@ namespace ZefirApp
 
 		e2.type = UserEvents::PAUSE_ANIM_PLAYING;
 		SDL_PushEvent(&e2);
+	}
+
+	void Player::ProcessKeyboardState()
+	{
+		const Uint8* keystate = SDL_GetKeyboardState(nullptr);
+
+		moveDir = { 0, 0 };
+
+		if (keystate[SDL_GetScancodeFromKey(MOVE_KEYBIND.LEFT)])  moveDir.x -= 1;
+		if (keystate[SDL_GetScancodeFromKey(MOVE_KEYBIND.RIGHT)]) moveDir.x += 1;
+		
+		if (keystate[SDL_GetScancodeFromKey(JUMP_KEYBIND)])       moveDir.y += 1;
 	}
 }

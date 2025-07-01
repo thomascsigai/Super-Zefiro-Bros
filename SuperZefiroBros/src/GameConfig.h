@@ -14,4 +14,6 @@ namespace ZefirApp
 	};
 
 	constexpr MoveKeybind MOVE_KEYBIND = { SDLK_UP, SDLK_DOWN, SDLK_LEFT, SDLK_RIGHT };
+
+	constexpr SDL_Keycode JUMP_KEYBIND = SDLK_SPACE;
 }
