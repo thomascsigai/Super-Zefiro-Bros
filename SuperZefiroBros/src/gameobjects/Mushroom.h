@@ -7,10 +7,11 @@ namespace ZefirApp
 	class Mushroom : public Zefir::GameObject
 	{
 	public:
-		Mushroom(float x, float y, std::shared_ptr<Zefir::Texture> texture)
-			: GameObject("Mushroom", x, y)
+		Mushroom(float x, float y, std::shared_ptr<Zefir::Texture> texture, 
+			std::shared_ptr<Zefir::Texture> spawnAnim)
+			: GameObject("Mushroom", x, y), idleTexture(texture), spawning(true)
 		{
-			SetTexture(texture);
+			SetTexture(spawnAnim);
 
 			m_Transform2D.SetSize(1, 1);
 
@@ -21,7 +22,7 @@ namespace ZefirApp
 			
 			m_Box = b2MakeRoundedBox(0.4, 0.4, 0.1);
 			
-			m_ShapeDef.enableContactEvents = true;
+			m_ShapeDef.enableContactEvents = false;
 			m_ShapeDef.material.friction = 0.0f;
 			m_ShapeDef.material.restitution = 0.0f;
 
@@ -30,6 +31,18 @@ namespace ZefirApp
 
 		void Update(double deltaTime) override
 		{
+			if (spawning)
+			{
+				m_UsePhysics = false;
+
+				if (m_AnimEnded)
+				{
+					spawning = false;
+					m_UsePhysics = true;
+				}
+				else return;
+			}
+
 			b2Body_SetLinearVelocity(m_BodyId, { moveDir.x * moveSpeed, b2Body_GetLinearVelocity(m_BodyId).y});
 		}
 
@@ -44,7 +57,11 @@ namespace ZefirApp
 		}
 
 	private:
+		std::shared_ptr<Zefir::Texture> idleTexture;
+
 		Zefir::Vector2 moveDir;
 		float moveSpeed = 3;
+
+		bool spawning;
 	};
 }

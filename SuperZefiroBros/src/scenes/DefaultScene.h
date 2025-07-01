@@ -173,7 +173,8 @@ namespace ZefirApp
 				{
 					AddObjectToScene(std::make_unique<Mushroom>(
 						pos->x, pos->y+1,
-						m_EngineContext->resourceManager->GetTexture("resources\\textures\\mushroom.png")
+						m_EngineContext->resourceManager->GetTexture("resources\\textures\\mushroom.png"),
+						m_EngineContext->resourceManager->GetAnimatedTexture("resources\\anims\\mushroom-spawning.png")
 					));
 				}
 				else

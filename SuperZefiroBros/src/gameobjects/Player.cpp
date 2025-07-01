@@ -32,13 +32,11 @@ namespace ZefirApp
 	{
 		if (isGrowing)
 		{
-			Zefir::AnimatedTexture* anim = static_cast<Zefir::AnimatedTexture*>(m_Texture.get());
 			m_UsePhysics = false;
 			
-			if (anim->IsEnded())
+			if (m_AnimEnded)
 			{
 				isGrowing = false;
-				anim->SetEnded(false);
 				b2Body_SetGravityScale(m_BodyId, 1);
 				m_UsePhysics = true;
 			}

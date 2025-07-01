@@ -1,0 +1,8 @@
+{
+  "name": "mushroomSpawn",
+  "frameCount": 4,
+  "frameTime": 100.0,
+  "frameW": 16,
+  "frameH": 16,
+  "repeat": false
+}
