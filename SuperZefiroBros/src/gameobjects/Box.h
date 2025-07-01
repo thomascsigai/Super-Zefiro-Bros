@@ -6,17 +6,23 @@
 
 namespace ZefirApp
 {
+	enum class BoxItemType
+	{
+		Mushroom,
+		Coin
+	};
+
 	class Box : public Brick
 	{
 	public:
 		Box(float x, float y, std::shared_ptr<Zefir::Texture> texture,
-			std::shared_ptr<Zefir::Texture> broken, std::string itemToSpawn)
+			std::shared_ptr<Zefir::Texture> broken, BoxItemType item)
 			: Brick(x, y, texture, broken)
 		{
 			m_Name = "Box";
 			SetTexture(texture);
 
-			m_ItemToSpawn = itemToSpawn;
+			itemToSpawn = item;
 
 			m_Transform2D.SetSize(1, 1);
 
@@ -41,12 +47,12 @@ namespace ZefirApp
 			// Push spawning item event
 			SDL_Event e;
 			e.type = UserEvents::BOX_ITEM_SPAWN;
-			e.user.data1 = new std::string(m_ItemToSpawn);
+			e.user.data1 = new BoxItemType(itemToSpawn);
 			e.user.data2 = new Zefir::Vector2(m_Transform2D.position);
 			SDL_PushEvent(&e);
 		}
 
 	private:
-		std::string m_ItemToSpawn;
+		BoxItemType itemToSpawn;
 	};
 }

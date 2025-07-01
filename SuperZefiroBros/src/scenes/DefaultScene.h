@@ -16,6 +16,7 @@
 #include <gameobjects/EmptyBox.h>
 #include <gameobjects/Block.h>
 #include <gameobjects/Mushroom.h>
+#include <gameobjects/BoxCoin.h>
 
 namespace ZefirApp
 {
@@ -91,7 +92,7 @@ namespace ZefirApp
 					box.x, box.y,
 					m_EngineContext->resourceManager->GetAnimatedTexture("resources\\anims\\box.png"),
 					m_EngineContext->resourceManager->GetTexture("resources\\textures\\box-broken.png"),
-					"Mushroom"
+					BoxItemType::Coin
 				));
 			}
 
@@ -166,15 +167,22 @@ namespace ZefirApp
 
 			if (e.type == UserEvents::BOX_ITEM_SPAWN)
 			{
-				std::string* item = static_cast<std::string*>(e.user.data1);
+				BoxItemType* item = static_cast<BoxItemType*>(e.user.data1);
 				Zefir::Vector2* pos = static_cast<Zefir::Vector2*>(e.user.data2);
 
-				if (*item == "Mushroom")
+				if (*item == BoxItemType::Mushroom)
 				{
 					AddObjectToScene(std::make_unique<Mushroom>(
-						pos->x, pos->y+1,
+						pos->x, pos->y + 1,
 						m_EngineContext->resourceManager->GetTexture("resources\\textures\\mushroom.png"),
 						m_EngineContext->resourceManager->GetAnimatedTexture("resources\\anims\\mushroom-spawning.png")
+					));
+				}
+				else if (*item == BoxItemType::Coin)
+				{
+					AddObjectToScene(std::make_unique<BoxCoin>(
+						pos->x, pos->y + 1.5,
+						m_EngineContext->resourceManager->GetAnimatedTexture("resources\\anims\\box-coin-spawning.png")
 					));
 				}
 				else
