@@ -19,9 +19,12 @@ namespace ZefirApp
 		m_BodyDef.fixedRotation = true;
 		m_BodyDef.position = { x, y };
 		m_BodyDef.gravityScale = 1;
+		m_BodyDef.enableSleep = false;
+
 		m_ShapeDef.material.friction = 0.0f;
 		m_ShapeDef.material.restitution = 0.0f;
 		m_ShapeDef.enableContactEvents = true;
+
 		m_Box = b2MakeRoundedBox(0.4f, 0.48f, 0.01f);
 	}
 
@@ -36,6 +39,7 @@ namespace ZefirApp
 			{
 				isGrowing = false;
 				anim->SetEnded(false);
+				b2Body_SetGravityScale(m_BodyId, 1);
 				m_UsePhysics = true;
 			}
 			else return;
@@ -59,11 +63,12 @@ namespace ZefirApp
 			SetTexture(m_IdleTexture);
 		}
 
+		// Flip the transform to face walking direction
 		if (moveDir.x != 0) m_Transform2D.horizontalFlip = (moveDir.x < 0);
 
+		// Apply velocity
 		velocity.x = moveDir.x * WALK_SPEED;
-		if (moveDir.y != 0 && IsOnGround()) velocity.y = JUMP_HEIGHT; 
-		moveDir.y = 0;
+		if (moveDir.y != 0 && IsOnGround()) velocity.y = JUMP_HEIGHT;
 
 		b2Body_SetLinearVelocity(m_BodyId, velocity);
 	}

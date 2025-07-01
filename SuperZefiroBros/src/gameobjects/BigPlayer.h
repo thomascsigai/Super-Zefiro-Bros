@@ -23,7 +23,9 @@ namespace ZefirApp
 			m_BodyDef.type = b2_dynamicBody;
 			m_BodyDef.fixedRotation = true;
 			m_BodyDef.position = {x, y};
-			m_BodyDef.gravityScale = 1;
+			m_BodyDef.gravityScale = 0;
+			m_BodyDef.enableSleep = false;
+
 			m_ShapeDef.material.friction = 0.0f;
 			m_ShapeDef.material.restitution = 0.0f;
 			m_ShapeDef.enableContactEvents = true;
