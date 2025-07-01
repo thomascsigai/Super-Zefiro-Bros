@@ -4,7 +4,6 @@
 
 namespace ZefirApp
 {
-	// Paddles keybinds
 	struct MoveKeybind
 	{
 		SDL_Keycode UP;
