@@ -17,7 +17,10 @@ namespace ZefirApp
 			m_UsePhysics = true;
 			m_BodyDef.type = b2_dynamicBody;
 			m_BodyDef.position = { x, y };
+			m_BodyDef.fixedRotation = true;
+			
 			m_Box = b2MakeRoundedBox(0.4, 0.4, 0.1);
+			
 			m_ShapeDef.enableContactEvents = true;
 			m_ShapeDef.material.friction = 0.0f;
 			m_ShapeDef.material.restitution = 0.0f;

@@ -90,7 +90,8 @@ namespace ZefirApp
 				AddObjectToScene(std::make_unique<ZefirApp::Box>(
 					box.x, box.y,
 					m_EngineContext->resourceManager->GetAnimatedTexture("resources\\anims\\box.png"),
-					m_EngineContext->resourceManager->GetTexture("resources\\textures\\box-broken.png")
+					m_EngineContext->resourceManager->GetTexture("resources\\textures\\box-broken.png"),
+					"Mushroom"
 				));
 			}
 
@@ -140,11 +141,6 @@ namespace ZefirApp
 				m_EngineContext->resourceManager->GetTexture("resources\\textures\\ground.png")
 			));
 
-			AddObjectToScene(std::make_unique<ZefirApp::Mushroom>(
-				0, 0,
-				m_EngineContext->resourceManager->GetTexture("resources\\textures\\mushroom.png")
-			));
-
 			if (!ptr_Player)
 			{
 				APP_LOG_FATAL("Player not created.");
@@ -166,6 +162,27 @@ namespace ZefirApp
 			if (e.type == SDL_KEYDOWN && e.key.repeat == 0)
 			{
 				
+			}
+
+			if (e.type == UserEvents::BOX_ITEM_SPAWN)
+			{
+				std::string* item = static_cast<std::string*>(e.user.data1);
+				Zefir::Vector2* pos = static_cast<Zefir::Vector2*>(e.user.data2);
+
+				if (*item == "Mushroom")
+				{
+					AddObjectToScene(std::make_unique<Mushroom>(
+						pos->x, pos->y+1,
+						m_EngineContext->resourceManager->GetTexture("resources\\textures\\mushroom.png")
+					));
+				}
+				else
+				{
+					APP_LOG_WARN("Trying to spawn unknow item : ", item);
+				}
+
+				delete item;
+				delete pos;
 			}
 
 			if (e.type == UserEvents::PLAYER_GROW)

@@ -10,11 +10,13 @@ namespace ZefirApp
 	{
 	public:
 		Box(float x, float y, std::shared_ptr<Zefir::Texture> texture,
-			std::shared_ptr<Zefir::Texture> broken)
+			std::shared_ptr<Zefir::Texture> broken, std::string itemToSpawn)
 			: Brick(x, y, texture, broken)
 		{
 			m_Name = "Box";
 			SetTexture(texture);
+
+			m_ItemToSpawn = itemToSpawn;
 
 			m_Transform2D.SetSize(1, 1);
 
@@ -35,6 +37,16 @@ namespace ZefirApp
 			isBouncing = true;
 
 			SetTexture(brokenAnim);
+
+			// Push spawning item event
+			SDL_Event e;
+			e.type = UserEvents::BOX_ITEM_SPAWN;
+			e.user.data1 = new std::string(m_ItemToSpawn);
+			e.user.data2 = new Zefir::Vector2(m_Transform2D.position);
+			SDL_PushEvent(&e);
 		}
+
+	private:
+		std::string m_ItemToSpawn;
 	};
 }
