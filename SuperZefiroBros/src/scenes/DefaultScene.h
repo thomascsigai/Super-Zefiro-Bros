@@ -63,7 +63,9 @@ namespace ZefirApp
 			}
 			
 			//Bricks
-			std::array<Zefir::Vector2, 3> brickCoords = {
+			const int numberOfBricks = 3;
+
+			std::array<Zefir::Vector2, numberOfBricks> brickCoords = {
 				Zefir::Vector2(10.5, -2.0),
 				Zefir::Vector2(12.5, -2.0),
 				Zefir::Vector2(14.5, -2.0)
@@ -78,21 +80,30 @@ namespace ZefirApp
 				));
 			}
 
-			// Boxs
-			std::array<Zefir::Vector2, 4> boxCoords = {
+			// Boxs & items
+			const int numberOfBoxes = 4;
+
+			std::array<Zefir::Vector2, numberOfBoxes> boxCoords = {
 				Zefir::Vector2(5.5, -2.0),
 				Zefir::Vector2(11.5, -2.0),
 				Zefir::Vector2(13.5, -2.0),
 				Zefir::Vector2(12.5, 2.0)
 			};
 
-			for (auto& box : boxCoords)
+			std::array<BoxItemType, numberOfBoxes> boxItems = {
+				BoxItemType::Coin,
+				BoxItemType::Coin,
+				BoxItemType::Mushroom,
+				BoxItemType::Coin
+			};
+
+			for (int i = 0; i < numberOfBoxes; i++)
 			{
 				AddObjectToScene(std::make_unique<ZefirApp::Box>(
-					box.x, box.y,
+					boxCoords[i].x, boxCoords[i].y,
 					m_EngineContext->resourceManager->GetAnimatedTexture("resources\\anims\\box.png"),
 					m_EngineContext->resourceManager->GetTexture("resources\\textures\\box-broken.png"),
-					BoxItemType::Coin
+					boxItems[i]
 				));
 			}
 
