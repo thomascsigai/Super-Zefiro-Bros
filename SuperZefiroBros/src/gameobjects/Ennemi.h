@@ -7,8 +7,9 @@ namespace ZefirApp
 	class Ennemi : public Zefir::GameObject
 	{
 	public:
-		Ennemi(float x, float y, std::shared_ptr<Zefir::Texture> texture)
-			: GameObject("Ennemi", x, y)
+		Ennemi(float x, float y, std::shared_ptr<Zefir::Texture> texture,
+			std::shared_ptr<Zefir::Texture> dieTexture)
+			: GameObject("Ennemi", x, y), texture(texture), dieTexture(dieTexture)
 		{
 			SetTexture(texture);
 			m_Transform2D.SetSize(1, 1);
@@ -43,8 +44,19 @@ namespace ZefirApp
 			}
 		}
 
+		void Die()
+		{
+			SetTexture(dieTexture);
+			moveDir = { 0, 0 };
+
+			m_UsePhysics = false;
+		}
+
 	private:
 		Zefir::Vector2 moveDir;
 		float moveSpeed = 3;
+
+		std::shared_ptr<Zefir::Texture> texture;
+		std::shared_ptr<Zefir::Texture> dieTexture;
 	};
 }

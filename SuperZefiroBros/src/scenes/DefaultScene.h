@@ -18,6 +18,7 @@
 #include <gameobjects/Mushroom.h>
 #include <gameobjects/BoxCoin.h>
 #include <gameobjects/Ennemi.h>
+#include <gameobjects/Gloomba.h>
 
 namespace ZefirApp
 {
@@ -108,9 +109,10 @@ namespace ZefirApp
 				));
 			}
 
-			AddObjectToScene(std::make_unique<ZefirApp::Ennemi>(
+			AddObjectToScene(std::make_unique<ZefirApp::Gloomba>(
 				0, 0,
-				m_EngineContext->resourceManager->GetTexture("resources\\textures\\box-broken.png")
+				m_EngineContext->resourceManager->GetAnimatedTexture("resources\\anims\\gloomba.png"),
+				m_EngineContext->resourceManager->GetTexture("resources\\textures\\gloomba-die.png")
 			));
 
 			// Blocks pyramids

@@ -1,4 +1,5 @@
 #include <gameobjects/Player.h>
+#include <gameobjects/Ennemi.h>
 #include <UserEvents.h>
 #include <GameConfig.h>
 #include <algorithm>
@@ -81,12 +82,6 @@ namespace ZefirApp
 
 	void Player::OnCollisionEnter(Zefir::GameObject* other, b2Manifold manifold)
 	{
-		auto it = std::find(groundObjects.begin(), groundObjects.end(), other);
-		if (manifold.normal.y < -0.8f && it == groundObjects.end())
-		{
-			groundObjects.push_back(other);
-		}
-
 		if (other->m_Name == "Mushroom")
 		{
 			if (!isBig) Grow();
@@ -95,12 +90,35 @@ namespace ZefirApp
 			e.type = Zefir::EngineEvents::SCENE_REMOVE_OBJECT;
 			e.user.data1 = new int(other->m_BodyId.index1);
 			SDL_PushEvent(&e);
+			
+			return;
 		}
 
 		if (other->m_Name == "Ennemi")
 		{
-			if (isBig) Shrink();
-			else APP_LOG_INFO("Die");
+			if (manifold.normal.y < -0.9)
+			{
+				/*SDL_Event e;
+				e.type = Zefir::EngineEvents::SCENE_REMOVE_OBJECT;
+				e.user.data1 = new int(other->m_BodyId.index1);
+				SDL_PushEvent(&e);*/
+
+				static_cast<ZefirApp::Ennemi*>(other)->Die();
+				b2Body_ApplyLinearImpulse(m_BodyId, killEnnemiImpulse.ToB2Vec2(), b2Body_GetLocalCenterOfMass(m_BodyId), true);
+				return;
+			}
+			else
+			{
+				if (isBig) Shrink();
+				else APP_LOG_INFO("Die");
+			}
+		}
+
+		// Detect if player hit any type of ground
+		auto it = std::find(groundObjects.begin(), groundObjects.end(), other);
+		if (manifold.normal.y < -0.8f && it == groundObjects.end())
+		{
+			groundObjects.push_back(other);
 		}
 	}
 
