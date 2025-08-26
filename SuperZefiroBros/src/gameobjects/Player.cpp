@@ -98,11 +98,6 @@ namespace ZefirApp
 		{
 			if (manifold.normal.y < -0.9)
 			{
-				/*SDL_Event e;
-				e.type = Zefir::EngineEvents::SCENE_REMOVE_OBJECT;
-				e.user.data1 = new int(other->m_BodyId.index1);
-				SDL_PushEvent(&e);*/
-
 				static_cast<ZefirApp::Ennemi*>(other)->Die();
 				b2Body_ApplyLinearImpulse(m_BodyId, killEnnemiImpulse.ToB2Vec2(), b2Body_GetLocalCenterOfMass(m_BodyId), true);
 				return;

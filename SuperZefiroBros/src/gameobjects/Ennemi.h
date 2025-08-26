@@ -32,6 +32,14 @@ namespace ZefirApp
 		void Update(double deltaTime) override
 		{
 			b2Body_SetLinearVelocity(m_BodyId, { moveDir.x * moveSpeed, b2Body_GetLinearVelocity(m_BodyId).y });
+
+			if (dieTimer.IsStarted() && dieTimer.GetTicks() > timeBeforeDespawn)
+			{
+				SDL_Event e;
+				e.type = Zefir::EngineEvents::SCENE_REMOVE_OBJECT;
+				e.user.data1 = new int(m_BodyId.index1);
+				SDL_PushEvent(&e);
+			}
 		}
 
 		void HandleEvent(const SDL_Event& e) override {}
@@ -50,6 +58,7 @@ namespace ZefirApp
 			moveDir = { 0, 0 };
 
 			m_UsePhysics = false;
+			dieTimer.Start();
 		}
 
 	private:
@@ -58,5 +67,8 @@ namespace ZefirApp
 
 		std::shared_ptr<Zefir::Texture> texture;
 		std::shared_ptr<Zefir::Texture> dieTexture;
+
+		Zefir::Timer dieTimer;
+		int timeBeforeDespawn = 100; // Time in ms for despawn ennemi when died
 	};
 }
