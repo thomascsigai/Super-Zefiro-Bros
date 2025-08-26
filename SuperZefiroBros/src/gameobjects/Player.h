@@ -20,6 +20,7 @@ namespace ZefirApp
 		bool IsOnGround();
 
 		void Grow();
+		void Shrink();
 
 		void ProcessKeyboardState();
 

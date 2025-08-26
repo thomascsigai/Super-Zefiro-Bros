@@ -96,6 +96,12 @@ namespace ZefirApp
 			e.user.data1 = new int(other->m_BodyId.index1);
 			SDL_PushEvent(&e);
 		}
+
+		if (other->m_Name == "Ennemi")
+		{
+			if (isBig) Shrink();
+			else APP_LOG_INFO("Die");
+		}
 	}
 
 	void Player::OnCollisionExit(Zefir::GameObject* other)
@@ -112,6 +118,17 @@ namespace ZefirApp
 		SDL_Event e1, e2;
 
 		e1.type = UserEvents::PLAYER_GROW;
+		SDL_PushEvent(&e1);
+
+		e2.type = UserEvents::PAUSE_ANIM_PLAYING;
+		SDL_PushEvent(&e2);
+	}
+
+	void Player::Shrink()
+	{
+		SDL_Event e1, e2;
+
+		e1.type = UserEvents::PLAYER_SHRINK;
 		SDL_PushEvent(&e1);
 
 		e2.type = UserEvents::PAUSE_ANIM_PLAYING;
