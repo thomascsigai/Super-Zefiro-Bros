@@ -17,9 +17,13 @@ namespace Zefir
     }
 
     // Convert World Coordinates (meters) to screen coordinates (pixels).
-    inline Vector2 WorldToScreenPosition(const Vector2& worldPos, int screenWidth, int screenHeight, const Camera& cam)
+    inline Vector2 WorldToScreenPosition(const Vector2& worldPos, Window* window, const Camera& cam)
     {
-        Vector2 pos = WorldToCamera(worldPos, cam);
+        int screenWidth, screenHeight;
+        SDL_GetWindowSize(window->GetSDLWindow(), &screenWidth, &screenHeight);
+
+        Vector2 pos;
+        pos = WorldToCamera(worldPos, cam);
 
         pos.x = (PIXELS_PER_METER + cam.zoom) * pos.x + screenWidth / 2;
         pos.y = screenHeight / 2 - (PIXELS_PER_METER + cam.zoom) * pos.y;
@@ -42,8 +46,8 @@ namespace Zefir
     // Convert Screen Coordinates (pixels) to World coordinates (pixels).
     inline Vector2 ScreenToWorld(const Vector2& screenPos, Window* window, const Camera& cam)
     {
-        int screenWidth = window->GetWindowSettings().width;
-        int screenHeight = window->GetWindowSettings().height;
+        int screenWidth, screenHeight;
+        SDL_GetWindowSize(window->GetSDLWindow(), &screenWidth, &screenHeight);
 
         float METERS_PER_PIXEL = 1.0f / (PIXELS_PER_METER + cam.zoom);
 
