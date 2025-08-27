@@ -17,7 +17,6 @@ namespace Zefir
 		void SetSettings(const WindowSettings&);
 		
 		SDL_Window* GetSDLWindow() const { return m_SDLWindow; }
-		WindowSettings GetWindowSettings() const { return m_Settings; }
 	
 	private:
 		bool Init();
