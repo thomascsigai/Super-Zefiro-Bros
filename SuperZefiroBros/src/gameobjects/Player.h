@@ -20,6 +20,7 @@ namespace ZefirApp
 		bool IsOnGround();
 
 		void Grow();
+		void Shrink();
 
 		void ProcessKeyboardState();
 
@@ -35,6 +36,8 @@ namespace ZefirApp
 		float WALK_SPEED = 5.0f;
 		float JUMP_HEIGHT = 16.0f;
 		Zefir::Vector2 moveDir = { 0, 0 };
+
+		Zefir::Vector2 killEnnemiImpulse = { 0, 3 };
 
 		std::vector<Zefir::GameObject*> groundObjects;
 	};

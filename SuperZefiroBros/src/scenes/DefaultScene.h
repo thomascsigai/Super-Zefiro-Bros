@@ -17,6 +17,8 @@
 #include <gameobjects/Block.h>
 #include <gameobjects/Mushroom.h>
 #include <gameobjects/BoxCoin.h>
+#include <gameobjects/Ennemi.h>
+#include <gameobjects/Gloomba.h>
 
 namespace ZefirApp
 {
@@ -106,6 +108,12 @@ namespace ZefirApp
 					boxItems[i]
 				));
 			}
+
+			AddObjectToScene(std::make_unique<ZefirApp::Gloomba>(
+				0, 0,
+				m_EngineContext->resourceManager->GetAnimatedTexture("resources\\anims\\gloomba.png"),
+				m_EngineContext->resourceManager->GetTexture("resources\\textures\\gloomba-die.png")
+			));
 
 			// Blocks pyramids
 			std::vector<std::unique_ptr<Block>> pyramid;
@@ -209,6 +217,11 @@ namespace ZefirApp
 			{
 				GrowPlayerSize();
 			}
+			
+			if (e.type == UserEvents::PLAYER_SHRINK)
+			{
+				ShrinkPlayerSize();
+			}
 
 			if (e.type == UserEvents::PAUSE_ANIM_PLAYING)
 			{
@@ -234,6 +247,20 @@ namespace ZefirApp
 				m_EngineContext->resourceManager->GetAnimatedTexture("resources\\anims\\mario-grow.png")
 			)));
 			
+			RemoveObject(ptr_Player->m_BodyId.index1);
+
+			ptr_Player = std::prev(m_SceneObjects.end())->second.get();
+		}
+
+		void ShrinkPlayerSize()
+		{
+			AddObjectToScene(std::make_unique<ZefirApp::Player>(
+				ptr_Player->m_Transform2D.position.x, ptr_Player->m_Transform2D.position.y + 0.5f,
+				m_EngineContext->resourceManager->GetTexture("resources\\textures\\mario.png"),
+				m_EngineContext->resourceManager->GetAnimatedTexture("resources\\anims\\mario-run.png"),
+				m_EngineContext->resourceManager->GetTexture("resources\\textures\\mario-jump.png")
+			));
+
 			RemoveObject(ptr_Player->m_BodyId.index1);
 
 			ptr_Player = std::prev(m_SceneObjects.end())->second.get();

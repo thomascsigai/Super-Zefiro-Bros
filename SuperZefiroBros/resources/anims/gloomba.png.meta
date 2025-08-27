@@ -1,0 +1,8 @@
+{
+    "name": "gloombaWalk",
+    "frameCount": 2,
+    "frameTime": 200.0,
+    "frameW": 16,
+    "frameH": 16,
+    "repeat" :  true
+}
