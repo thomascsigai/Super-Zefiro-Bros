@@ -9,7 +9,7 @@ namespace Zefir
     // ZEFIR AXIS :
     // ORIGIN AT THE CENTER OF THE SCREEN
     // RIGHT HANDED - Y UP
-    
+
     // Convert the position from world coordinates to camera related position
     inline Vector2 WorldToCamera(const Vector2& position, const Camera& cam)
     {
@@ -17,16 +17,16 @@ namespace Zefir
     }
 
     // Convert World Coordinates (meters) to screen coordinates (pixels).
-    inline Vector2 WorldToScreenPosition(const Vector2& worldPos, Window* window, const Camera& cam)
+    inline Vector2 WorldToScreenPosition(const Vector2& worldPos, int screenWidth, int screenHeight, const Camera& cam)
     {
-        int screenWidth, screenHeight;
-        SDL_GetWindowSize(window->GetSDLWindow(), &screenWidth, &screenHeight);
+        Vector2 pos = WorldToCamera(worldPos, cam);
 
-        Vector2 pos;
-        pos = WorldToCamera(worldPos, cam);
+        const float scale = PIXELS_PER_METER + cam.zoom;
+        const float halfW = 0.5f * static_cast<float>(screenWidth);
+        const float halfH = 0.5f * static_cast<float>(screenHeight);
 
-        pos.x = (PIXELS_PER_METER + cam.zoom) * pos.x + screenWidth / 2;
-        pos.y = screenHeight / 2 - (PIXELS_PER_METER + cam.zoom) * pos.y;
+        pos.x = scale * pos.x + halfW;
+        pos.y = halfH - scale * pos.y;
 
         return pos;
     }
@@ -44,18 +44,17 @@ namespace Zefir
     }
 
     // Convert Screen Coordinates (pixels) to World coordinates (pixels).
-    inline Vector2 ScreenToWorld(const Vector2& screenPos, Window* window, const Camera& cam)
+    inline Vector2 ScreenToWorld(const Vector2& screenPos, int screenWidth, int screenHeight, const Camera& cam)
     {
-        int screenWidth, screenHeight;
-        SDL_GetWindowSize(window->GetSDLWindow(), &screenWidth, &screenHeight);
-
-        float METERS_PER_PIXEL = 1.0f / (PIXELS_PER_METER + cam.zoom);
+        const float scaleInv = 1.0f / (PIXELS_PER_METER + cam.zoom);
+        const float halfW = 0.5f * static_cast<float>(screenWidth);
+        const float halfH = 0.5f * static_cast<float>(screenHeight);
 
         Vector2 pos;
-        pos.x = screenPos.x * METERS_PER_PIXEL - screenWidth / 2 * METERS_PER_PIXEL;
-        pos.y = (screenHeight / 2 - screenPos.y) * METERS_PER_PIXEL;
-        pos += cam.position;
+        pos.x = (screenPos.x - halfW) * scaleInv;
+        pos.y = (halfH - screenPos.y) * scaleInv;
 
+        pos += cam.position;
         return pos;
     }
 }

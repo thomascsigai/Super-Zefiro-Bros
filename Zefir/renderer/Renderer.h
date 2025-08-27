@@ -47,7 +47,7 @@ namespace Zefir
 #endif
 
 	private:
-		bool IsOutsideOfScreen(SDL_FRect rect);
+		bool IsOutsideOfScreen(const SDL_FRect& rect);
 
 	private:
 		bool Init(Window* window);
@@ -57,5 +57,10 @@ namespace Zefir
 		Window* m_Window;
 
 		int m_DrawCallsCount;
+
+		int m_ScreenWidth;
+		int m_ScreenHeight;
+
+		SDL_FRect m_ScreenRect;
 	};
 }
