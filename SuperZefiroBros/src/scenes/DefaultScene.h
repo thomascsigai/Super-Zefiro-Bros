@@ -109,8 +109,10 @@ namespace ZefirApp
 				));
 			}
 
+			// Enemies
+
 			AddObjectToScene(std::make_unique<ZefirApp::Gloomba>(
-				0, 0,
+				30, 0,
 				m_EngineContext->resourceManager->GetAnimatedTexture("resources\\anims\\gloomba.png"),
 				m_EngineContext->resourceManager->GetTexture("resources\\textures\\gloomba-die.png")
 			));
