@@ -35,10 +35,13 @@ namespace ZefirApp
 
 			if (dieTimer.IsStarted() && dieTimer.GetTicks() > timeBeforeDespawn)
 			{
-				SDL_Event e;
-				e.type = Zefir::EngineEvents::SCENE_REMOVE_OBJECT;
-				e.user.data1 = new int(m_BodyId.index1);
-				SDL_PushEvent(&e);
+				RemoveObjectFromScene();
+			}
+
+			// Remove Enemi if falls outside of the map
+			if (m_Transform2D.position.y < -10)
+			{
+				RemoveObjectFromScene();
 			}
 		}
 
