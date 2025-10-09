@@ -9,6 +9,8 @@ namespace ZefirApp
 		// Place here your events you have to use in your app
 		// const inline Uint32 EVENT_EXEMPLE = SDL_RegisterEvents(1);
 		
+		const inline Uint32 SWITCH_FIRST_SCENE = SDL_RegisterEvents(1);
+		
 		const inline Uint32 PLAYER_GROW = SDL_RegisterEvents(1);
 		const inline Uint32 PLAYER_SHRINK = SDL_RegisterEvents(1);
 		const inline Uint32 PAUSE_ANIM_PLAYING = SDL_RegisterEvents(1);

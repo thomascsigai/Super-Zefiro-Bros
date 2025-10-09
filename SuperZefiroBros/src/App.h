@@ -25,12 +25,10 @@ namespace ZefirApp
 
 		void HandleEvents(SDL_Event& e) override
 		{
-			if (e.type == SDL_KEYDOWN)
+			// Switch to first scene (1-1)
+			if (e.type == UserEvents::SWITCH_FIRST_SCENE)
 			{
-				if (e.key.keysym.sym == SDLK_1)
-				{
-					m_SceneManager->LoadScene(std::make_unique<DefaultScene>(), &m_EngineContext);
-				}
+				m_SceneManager->LoadScene(std::make_unique<DefaultScene>(), &m_EngineContext);
 			}
 		}
 	};

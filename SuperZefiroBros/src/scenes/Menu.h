@@ -1,6 +1,7 @@
 #pragma once
 
 #include <scene/Scene.h>
+#include <scene/UI/UIText.h>
 #include <core/debug/Log.h>
 
 #include <gameobjects/Background.h>
@@ -13,7 +14,19 @@ namespace ZefirApp
 		{
 			m_Cam.zoom = 2.0f;
 
+			AddUIToScene(std::make_unique<Zefir::UIText>(
+				0.0f, -1.0f, // Position
+				std::string("Press Return to Play"), // Text
+				m_EngineContext->resourceManager->GetFont("resources\\fonts\\bit5x3.ttf"), // Font
+				50, SDL_Color(255, 255, 255, 255) // Font Size, Color
+			));
 			
+			AddUIToScene(std::make_unique<Zefir::UIText>(
+				0.0f, -2.0f, // Position
+				std::string("Press R to Change Resolution"), // Text
+				m_EngineContext->resourceManager->GetFont("resources\\fonts\\bit5x3.ttf"), // Font
+				40, SDL_Color(100, 100, 100, 255) // Font Size, Color
+			));
 		}
 
 		void OnUnload() override
@@ -30,9 +43,10 @@ namespace ZefirApp
 		{
 			if (e.type == SDL_KEYDOWN)
 			{
-				if (e.key.keysym.sym == SDLK_SPACE)
+				if (e.key.keysym.sym == SDLK_RETURN)
 				{
-					APP_LOG_INFO("Scene swicth");
+					SDL_Event e = { UserEvents::SWITCH_FIRST_SCENE };
+					SDL_PushEvent(&e);
 				}
 			}
 		}
