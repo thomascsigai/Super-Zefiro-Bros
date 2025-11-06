@@ -50,7 +50,17 @@ namespace ZefirApp
 
 		if (!IsOnGround())
 		{
-			SetTexture(m_JumpTexture);
+			if (m_Texture != m_JumpTexture)
+			{
+				SetTexture(m_JumpTexture);
+
+				const Uint8* keystate = SDL_GetKeyboardState(nullptr);
+				if (keystate[SDL_GetScancodeFromKey(JUMP_KEYBIND)])
+				{
+					SDL_Event e = { UserEvents::PLAYER_JUMP };
+					SDL_PushEvent(&e);
+				}
+			}
 		}
 		else if (abs(velocity.x) >= 0.01f)
 		{
@@ -73,7 +83,15 @@ namespace ZefirApp
 	}
 
 	void Player::HandleEvent(const SDL_Event& e)
-	{}
+	{
+		if (e.type == SDL_KEYDOWN)
+		{
+			if (e.key.keysym.sym == JUMP_KEYBIND && e.key.repeat == 0)
+			{
+				
+			}
+		}
+	}
 
 	bool Player::IsOnGround()
 	{

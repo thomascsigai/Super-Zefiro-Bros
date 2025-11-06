@@ -34,6 +34,10 @@ namespace ZefirApp
 			m_Timer = Zefir::Timer();
 			m_Timer.Start();
 
+			m_EngineContext->soundManager->PlaySound(
+				m_EngineContext->resourceManager->GetSound("resources\\sounds\\music.mp3"), -1
+			);
+
 			//UI
 
 			AddUIToScene(std::make_unique<Zefir::UIText>(
@@ -267,6 +271,10 @@ namespace ZefirApp
 						m_EngineContext->resourceManager->GetTexture("resources\\textures\\mushroom.png"),
 						m_EngineContext->resourceManager->GetAnimatedTexture("resources\\anims\\mushroom-spawning.png")
 					));
+
+					m_EngineContext->soundManager->PlaySound(
+						m_EngineContext->resourceManager->GetSound("resources\\sounds\\smb_powerup_appears.wav")
+					);
 				}
 				else if (*item == BoxItemType::Coin)
 				{
@@ -276,6 +284,10 @@ namespace ZefirApp
 					));
 					m_Pieces++;
 					m_Score += 200;
+
+					m_EngineContext->soundManager->PlaySound(
+						m_EngineContext->resourceManager->GetSound("resources\\sounds\\smb_coin.wav")
+					);
 				}
 				else
 				{
@@ -290,6 +302,10 @@ namespace ZefirApp
 			{
 				GrowPlayerSize();
 				m_Score += 100;
+
+				m_EngineContext->soundManager->PlaySound(
+					m_EngineContext->resourceManager->GetSound("resources\\sounds\\smb_powerup.wav")
+				);
 			}
 			
 			if (e.type == UserEvents::PLAYER_SHRINK)
@@ -305,6 +321,17 @@ namespace ZefirApp
 			if (e.type == UserEvents::ENEMI_KILLED)
 			{
 				m_Score += 100;
+
+				m_EngineContext->soundManager->PlaySound(
+					m_EngineContext->resourceManager->GetSound("resources\\sounds\\smb_stomp.wav")
+				);
+			}
+
+			if (e.type == UserEvents::PLAYER_JUMP)
+			{
+				m_EngineContext->soundManager->PlaySound(
+					m_EngineContext->resourceManager->GetSound("resources\\sounds\\smb_jump-small.wav")
+				);
 			}
 		}
 
