@@ -20,7 +20,7 @@ namespace ZefirApp
 		{
 			//m_SceneManager->LoadScene(std::make_unique<DefaultScene>(), &m_EngineContext);
 			m_SceneManager->LoadScene(std::make_unique<MenuScene>(), &m_EngineContext);
-			m_Window->SetSettings({ "Super Zefiro Bros. (1024 x 768)", 1024, 768, true });
+			m_Window->SetSettings({ "Super Zefiro Bros. (1024 x 768)", 1024, 768, false });
 		}
 
 		void HandleEvents(SDL_Event& e) override
