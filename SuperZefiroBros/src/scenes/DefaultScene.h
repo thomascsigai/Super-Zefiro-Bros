@@ -192,6 +192,17 @@ namespace ZefirApp
 				m_EngineContext->resourceManager->GetAnimatedTexture("resources\\anims\\gloomba.png"),
 				m_EngineContext->resourceManager->GetTexture("resources\\textures\\gloomba-die.png")
 			));
+			
+			AddObjectToScene(std::make_unique<ZefirApp::Gloomba>(
+				40, 0,
+				m_EngineContext->resourceManager->GetAnimatedTexture("resources\\anims\\gloomba.png"),
+				m_EngineContext->resourceManager->GetTexture("resources\\textures\\gloomba-die.png")
+			));
+			AddObjectToScene(std::make_unique<ZefirApp::Gloomba>(
+				45, 0,
+				m_EngineContext->resourceManager->GetAnimatedTexture("resources\\anims\\gloomba.png"),
+				m_EngineContext->resourceManager->GetTexture("resources\\textures\\gloomba-die.png")
+			));
 
 			// Blocks pyramids
 			std::vector<std::unique_ptr<Block>> pyramid;
@@ -301,7 +312,7 @@ namespace ZefirApp
 			if (e.type == UserEvents::PLAYER_GROW)
 			{
 				GrowPlayerSize();
-				m_Score += 100;
+				m_Score += 1000;
 
 				m_EngineContext->soundManager->PlaySound(
 					m_EngineContext->resourceManager->GetSound("resources\\sounds\\smb_powerup.wav")
