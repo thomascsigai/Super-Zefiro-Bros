@@ -2,6 +2,8 @@
 
 #include <Zefir.h>
 
+#include <UserEvents.h>
+
 namespace ZefirApp
 {
 	class Ennemi : public Zefir::GameObject
@@ -62,6 +64,9 @@ namespace ZefirApp
 
 			m_UsePhysics = false;
 			dieTimer.Start();
+
+			SDL_Event e = { UserEvents::ENEMI_KILLED };
+			SDL_PushEvent(&e);
 		}
 
 	private:

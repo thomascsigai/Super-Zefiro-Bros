@@ -16,5 +16,7 @@ namespace ZefirApp
 		const inline Uint32 PAUSE_ANIM_PLAYING = SDL_RegisterEvents(1);
 
 		const inline Uint32 BOX_ITEM_SPAWN = SDL_RegisterEvents(1);
+
+		const inline Uint32 ENEMI_KILLED = SDL_RegisterEvents(1);
 	}
 }

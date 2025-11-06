@@ -31,6 +31,8 @@ namespace ZefirApp
 		{
 			APP_LOG_INFO("Scene load");
 			m_Cam.zoom = 2.0f;
+			m_Timer = Zefir::Timer();
+			m_Timer.Start();
 
 			//UI
 
@@ -40,7 +42,7 @@ namespace ZefirApp
 				m_EngineContext->resourceManager->GetFont("resources\\fonts\\bit5x3.ttf"), // Font
 				50, SDL_Color(255, 255, 255, 255) // Font Size, Color
 			));
-			m_UIScoreLabel = std::prev(m_UIObjects.end())->second.get();
+			m_UIScoreLabel = static_cast<Zefir::UIText*>(std::prev(m_UIObjects.end())->second.get());
 			
 			AddUIToScene(std::make_unique<Zefir::UIText>(
 				-7.0f, 5.0f, // Position
@@ -48,16 +50,16 @@ namespace ZefirApp
 				m_EngineContext->resourceManager->GetFont("resources\\fonts\\bit5x3.ttf"), // Font
 				50, SDL_Color(255, 255, 255, 255) // Font Size, Color
 			));
-			m_UIScore = std::prev(m_UIObjects.end())->second.get();
+			m_UIScore = static_cast<Zefir::UIText*>(std::prev(m_UIObjects.end())->second.get());
 
 
 			AddUIToScene(std::make_unique<Zefir::UIText>(
 				-2.5f, 6.0f, // Position
-				std::string("PIECES"), // Text
+				std::string("COINS"), // Text
 				m_EngineContext->resourceManager->GetFont("resources\\fonts\\bit5x3.ttf"), // Font
 				50, SDL_Color(255, 255, 255, 255) // Font Size, Color
 			));
-			m_UIPiecesLabel = std::prev(m_UIObjects.end())->second.get();
+			m_UIPiecesLabel = static_cast<Zefir::UIText*>(std::prev(m_UIObjects.end())->second.get());
 			
 			AddUIToScene(std::make_unique<Zefir::UIText>(
 				-2.5f, 5.0f, // Position
@@ -65,7 +67,7 @@ namespace ZefirApp
 				m_EngineContext->resourceManager->GetFont("resources\\fonts\\bit5x3.ttf"), // Font
 				50, SDL_Color(255, 255, 255, 255) // Font Size, Color
 			));
-			m_UIPieces = std::prev(m_UIObjects.end())->second.get();
+			m_UIPieces = static_cast<Zefir::UIText*>(std::prev(m_UIObjects.end())->second.get());
 
 
 			AddUIToScene(std::make_unique<Zefir::UIText>(
@@ -74,7 +76,7 @@ namespace ZefirApp
 				m_EngineContext->resourceManager->GetFont("resources\\fonts\\bit5x3.ttf"), // Font
 				50, SDL_Color(255, 255, 255, 255) // Font Size, Color
 			));
-			m_UIWorldLabel = std::prev(m_UIObjects.end())->second.get();
+			m_UIWorldLabel = static_cast<Zefir::UIText*>(std::prev(m_UIObjects.end())->second.get());
 			
 			AddUIToScene(std::make_unique<Zefir::UIText>(
 				2.5f, 5.0f, // Position
@@ -82,7 +84,7 @@ namespace ZefirApp
 				m_EngineContext->resourceManager->GetFont("resources\\fonts\\bit5x3.ttf"), // Font
 				50, SDL_Color(255, 255, 255, 255) // Font Size, Color
 			));
-			m_UIWorld = std::prev(m_UIObjects.end())->second.get();
+			m_UIWorld = static_cast<Zefir::UIText*>(std::prev(m_UIObjects.end())->second.get());
 
 
 			AddUIToScene(std::make_unique<Zefir::UIText>(
@@ -91,7 +93,7 @@ namespace ZefirApp
 				m_EngineContext->resourceManager->GetFont("resources\\fonts\\bit5x3.ttf"), // Font
 				50, SDL_Color(255, 255, 255, 255) // Font Size, Color
 			));
-			m_UITimeLabel = std::prev(m_UIObjects.end())->second.get();
+			m_UITimeLabel = static_cast<Zefir::UIText*>(std::prev(m_UIObjects.end())->second.get());
 			
 			AddUIToScene(std::make_unique<Zefir::UIText>(
 				7.0f, 5.0f, // Position
@@ -99,7 +101,7 @@ namespace ZefirApp
 				m_EngineContext->resourceManager->GetFont("resources\\fonts\\bit5x3.ttf"), // Font
 				50, SDL_Color(255, 255, 255, 255) // Font Size, Color
 			));
-			m_UITime = std::prev(m_UIObjects.end())->second.get();
+			m_UITime = static_cast<Zefir::UIText*>(std::prev(m_UIObjects.end())->second.get());
 
 			//Background
 			AddObjectToScene(std::make_unique<ZefirApp::Background>(
@@ -164,8 +166,8 @@ namespace ZefirApp
 
 			std::array<BoxItemType, numberOfBoxes> boxItems = {
 				BoxItemType::Coin,
-				BoxItemType::Coin,
 				BoxItemType::Mushroom,
+				BoxItemType::Coin,
 				BoxItemType::Coin
 			};
 
@@ -247,15 +249,12 @@ namespace ZefirApp
 		void OnUpdate() override
 		{
 			CameraUpdatePosition();
+			UpdateScoreUI();
+			UpdateTimer();
 		}
 
 		void OnSceneEvent(const SDL_Event& e)
 		{
-			if (e.type == SDL_KEYDOWN && e.key.repeat == 0)
-			{
-				
-			}
-
 			if (e.type == UserEvents::BOX_ITEM_SPAWN)
 			{
 				BoxItemType* item = static_cast<BoxItemType*>(e.user.data1);
@@ -275,6 +274,8 @@ namespace ZefirApp
 						pos->x, pos->y + 1.5,
 						m_EngineContext->resourceManager->GetAnimatedTexture("resources\\anims\\box-coin-spawning.png")
 					));
+					m_Pieces++;
+					m_Score += 200;
 				}
 				else
 				{
@@ -288,6 +289,7 @@ namespace ZefirApp
 			if (e.type == UserEvents::PLAYER_GROW)
 			{
 				GrowPlayerSize();
+				m_Score += 100;
 			}
 			
 			if (e.type == UserEvents::PLAYER_SHRINK)
@@ -298,6 +300,11 @@ namespace ZefirApp
 			if (e.type == UserEvents::PAUSE_ANIM_PLAYING)
 			{
 				// Put here the behavior of go when a player anim is playing
+			}
+			
+			if (e.type == UserEvents::ENEMI_KILLED)
+			{
+				m_Score += 100;
 			}
 		}
 
@@ -322,7 +329,19 @@ namespace ZefirApp
 
 		void UpdateScoreUI()
 		{
+			m_UIScore->SetText(std::to_string(m_Score));
+			m_UIPieces->SetText(std::to_string(m_Pieces));
+			m_UITime->SetText(std::to_string(m_Time));
+		}
 
+		void UpdateTimer()
+		{
+			if (m_Timer.GetTicks() > 1000)
+			{
+				m_Time -= 1;
+				m_Timer.Stop();
+				m_Timer.Start();
+			}
 		}
 
 		void GrowPlayerSize()
@@ -356,17 +375,19 @@ namespace ZefirApp
 
 		Zefir::GameObject* ptr_Player;
 
-		Zefir::UIObject* m_UIScoreLabel;
-		Zefir::UIObject* m_UIScore;
-		Zefir::UIObject* m_UIPiecesLabel;
-		Zefir::UIObject* m_UIPieces;
-		Zefir::UIObject* m_UIWorldLabel;
-		Zefir::UIObject* m_UIWorld;
-		Zefir::UIObject* m_UITimeLabel;
-		Zefir::UIObject* m_UITime;
+		Zefir::UIText* m_UIScoreLabel;
+		Zefir::UIText* m_UIScore;
+		Zefir::UIText* m_UIPiecesLabel;
+		Zefir::UIText* m_UIPieces;
+		Zefir::UIText* m_UIWorldLabel;
+		Zefir::UIText* m_UIWorld;
+		Zefir::UIText* m_UITimeLabel;
+		Zefir::UIText* m_UITime;
 
 		int m_Score = 0;
 		int m_Pieces = 0;
 		int m_Time = 400;
+
+		Zefir::Timer m_Timer;
 	};
 }
