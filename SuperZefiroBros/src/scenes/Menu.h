@@ -52,6 +52,10 @@ namespace ZefirApp
 				{
 					SDL_Event e = { UserEvents::SWITCH_FIRST_SCENE };
 					SDL_PushEvent(&e);
+
+					m_EngineContext->soundManager->PlaySound(
+						m_EngineContext->resourceManager->GetSound("resources\\sounds\\smb_1-up.wav")
+					);
 				}
 			}
 		}
